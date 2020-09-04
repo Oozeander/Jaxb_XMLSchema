@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+            jaxb:version="2.1">
+    <xs:element name="personnes">
+        <xs:complexType>
+            <xs:group ref="personnes"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:group name="personnes">
+        <xs:sequence>
+            <xs:element ref="personne1"/>
+            <xs:element ref="personne2"/>
+            <xs:element ref="personne3"/>
+            <xs:element ref="personne4"/>
+            <xs:element ref="personne5"/>
+            <xs:element ref="personne6"/>
+            <xs:element ref="personne7"/>
+            <xs:element ref="personne8"/>
+        </xs:sequence>
+    </xs:group>
+    
+    <xs:element name="personne1" type="personneAvecAttribut"/>
+    <xs:element name="personne2" type="personneAvecAttributEtValeur"/>
+    <xs:element name="personne3" type="personneComplexe"/>
+    <xs:element name="personne4" type="personneListe1"/>
+    <xs:element name="personne5" type="personneListe2"/>
+    <xs:element name="personne6" type="personneChoice"/>
+    <xs:element name="personne7" type="personneNoOrder"/>
+    <xs:element name="personne8" type="personneRestriction"/>
+
+    <xs:complexType name="personneAvecAttribut">
+        <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="personneAvecAttributEtValeur">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:complexType name="personneComplexe">
+        <xs:sequence>
+            <xs:element name="nom" type="xs:string" default="KETROUCI"/>
+            <xs:element name="prenom" type="xs:string" fixed="Billel"/>
+            <xs:element name="date" type="xs:date" nillable="true">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <jaxb:class ref="java.util.Date"/>
+                    </xs:appinfo>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+
+    <!--
+         <xs:complexType name="liste">
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="skill" type="xs:string"/>
+            </xs:sequence>
+         </xs:complexType>
+
+         Pour Reutiliser (POJO Liste.java)
+    -->
+
+    <xs:complexType name="personneListe1">
+        <xs:sequence>
+            <xs:element name="nomComplet" type="xs:string"/>
+            <xs:element name="skills">
+                <xs:complexType>
+                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="skill" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="list">
+        <xs:list itemType="xs:string"/>
+    </xs:simpleType>
+
+    <xs:complexType name="personneListe2">
+        <xs:sequence>
+            <xs:element name="nomComplet" type="xs:string"/>
+            <xs:element name="skills" type="list"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="nomEtPrenom">
+        <xs:sequence>
+            <xs:element name="nom" type="xs:string"/>
+            <xs:element name="prenom" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="personneChoice">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="nomComplet" type="xs:string"/>
+                <xs:element name="nomEtPrenom" type="nomEtPrenom"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="personneNoOrder">
+        <xs:all>
+            <xs:element name="nomEtPrenom" type="nomEtPrenom"/>
+            <xs:element name="date" type="xs:date">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <jaxb:class ref="java.util.Date"/>
+                    </xs:appinfo>
+                </xs:annotation>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+    
+    <xs:simpleType name="restrictionAnneeEntreMinEtMax">
+        <xs:restriction base="xs:gYear">
+            <xs:maxInclusive value="2020"/>
+            <xs:minInclusive value="1996"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="restrictionEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Developpeur"/>
+            <xs:enumeration value="Architecte"/>
+            <xs:enumeration value="Medecin"/>
+            <xs:enumeration value="Pilote"/>
+            <xs:enumeration value="President"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="personneRestriction">
+        <xs:all>
+            <xs:element name="initial">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[A-Z][A-Z]"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="anneeDeNaissance" type="restrictionAnneeEntreMinEtMax">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <jaxb:class ref="java.math.BigInteger"/>
+                    </xs:appinfo>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="profession" type="restrictionEnum"/>
+            <xs:element name="motDePasse">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="8"/>
+                        <xs:maxLength value="32"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:all>
+        <xs:attribute name="id">
+            <xs:simpleType>
+                <xs:restriction base="xs:positiveInteger">
+                    <xs:pattern value="[0-9][0-9][0-9][0-9]"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+</xs:schema>

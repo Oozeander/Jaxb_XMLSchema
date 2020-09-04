@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<personnes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="com/oozeander/xsd/personnes.xsd">
+    <personne1 value="Billel"/>
+    <personne2 id="1">Billel</personne2>
+    <personne3 id="1">
+        <nom>KETROUCI</nom>
+        <prenom>Billel</prenom>
+        <date xsi:nil="true"/>
+    </personne3>
+    <personne4>
+        <nomComplet>Billel KETROUCI</nomComplet>
+        <skills>
+            <skill>Java</skill>
+            <skill>Hibernate</skill>
+            <skill>Spring</skill>
+            <skill>Angular</skill>
+        </skills>
+    </personne4>
+    <personne5>
+        <nomComplet>Billel KETROUCI</nomComplet>
+        <skills>Java Hibernate Spring Angular</skills>
+    </personne5>
+    <personne6>
+        <nomComplet>Billel KETROUCI</nomComplet>
+    </personne6>
+    <personne7>
+        <nomEtPrenom>
+            <nom>KETROUCI</nom>
+            <prenom>Billel</prenom>
+        </nomEtPrenom>
+        <date>2020-09-04+02:00</date>
+    </personne7>
+    <personne8 id="1170">
+        <initial>BK</initial>
+        <anneeDeNaissance>1996</anneeDeNaissance>
+        <profession>Developpeur</profession>
+        <motDePasse>monMotDePasse</motDePasse>
+    </personne8>
+</personnes>
